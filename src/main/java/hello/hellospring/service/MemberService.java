@@ -28,14 +28,12 @@ public class MemberService {
         memberRepository.save(member);
         return member.getId();
     }
-
     private void validateDuplicateMember(Member member) {
         memberRepository.findByName(member.getName())
                 .ifPresent(m -> {
                     throw new IllegalStateException("이미 존재하는 회원 입니다.");
                 });
     }
-
     // 회원 검색
     public List<Member> findMembers() {
         return memberRepository.findAll();

@@ -28,10 +28,13 @@ public class MemoryMemberRepository implements MemberRepository {
                 .filter(member -> member.getName().equals(name))    // 같은 경우에만 필터링
                 .findAny();     // 하나 찾아지면 반환, 없으면 null
     }
+
     @Override
     public List<Member> findAll() {
         return new ArrayList<>(store.values());
     }
+
+
 
 
 }
