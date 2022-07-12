@@ -2,6 +2,7 @@ package hello.hellospring.service;
 
 import hello.hellospring.domain.Member;
 import hello.hellospring.repository.MemberRepository;
+import hello.hellospring.repository.MemoryMemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,21 +17,19 @@ public class MemberService {
     // 같은 인스턴스 사용하도록 바꾸려면?
     private final MemberRepository memberRepository;
 
-    public MemberService(MemberRepository memberRepository) {   // new에서 생성하는게 아니라 외부에서 넣어주도록 함 > DI
+    @Autowired
+    public MemberService(MemberRepository memberRepository) {
         this.memberRepository = memberRepository;
     }
 
-    @Autowired
-
-
     // 회원 가입
     public Long join(Member member) {
-        ValidataDuplicateMember(member);    // 중복 회원 검증
+        validateDuplicateMember(member);    // 중복 회원 검증
         memberRepository.save(member);
         return member.getId();
     }
 
-    private void ValidataDuplicateMember(Member member) {
+    private void validateDuplicateMember(Member member) {
         memberRepository.findByName(member.getName())
                 .ifPresent(m -> {
                     throw new IllegalStateException("이미 존재하는 회원 입니다.");
